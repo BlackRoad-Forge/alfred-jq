@@ -1,34 +1,54 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # vim:fenc=utf-8
 
-from __future__ import print_function, unicode_literals, absolute_import
+"""Alfred workflow script for jq key autocompletion.
+
+Reads JSON from clipboard, extracts available keys for the current jq query,
+and presents them as Alfred autocomplete suggestions.
+"""
 
 import sys
-from workflow import Workflow, web, ICON_WARNING
-import json
+from workflow import Workflow
 
-USER_AGENT = 'Alfred-JQ/{version} ({url})'
+
+def build_full_query(query, key):
+    """Build a full jq query by appending a key to the current query.
+
+    Args:
+        query: Current jq query string.
+        key: Key to append.
+
+    Returns:
+        Full jq query string with the key appended.
+    """
+    if query[-1] != '.':
+        return query + '.' + key
+    return query + key
 
 
 def main(wf):
+    """Main workflow entry point.
+
+    Args:
+        wf: Alfred Workflow instance.
+
+    Returns:
+        Exit code (0 for success).
+    """
     queries = wf.args
     q = queries[0].strip()
     error_code = queries[-1]
     if error_code != '0':
-        wf.add_item('Invalid JSON String in clipboard.', 
+        wf.add_item('Invalid JSON String in clipboard.',
                     valid=False,
                     icon='error.png')
         wf.send_feedback()
         return 0
 
     keys = queries[1:-1]
-    url = None
     for k in keys:
-        if q[-1] != '.':
-            full_q = q + '.' + k
-        else:
-            full_q = q + k
+        full_q = build_full_query(q, k)
         wf.add_item(k,
                     arg=full_q,
                     autocomplete=full_q,
@@ -36,7 +56,8 @@ def main(wf):
                     icon='icon.png')
     wf.send_feedback()
     return 0
-        
+
+
 if __name__ == '__main__':
     wf = Workflow()
     log = wf.logger

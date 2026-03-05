@@ -1,0 +1,95 @@
+# GitHub Pages deployment for project documentation
+# All actions pinned to commit hashes for reproducibility
+name: Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Pages
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+      - name: Build documentation site
+        run: |
+          mkdir -p _site
+          cat > _site/index.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>alfred-jq - Alfred Workflow for jq</title>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 2rem; }
+              h1 { color: #5b2585; margin-bottom: 0.5rem; }
+              h2 { color: #444; margin: 1.5rem 0 0.5rem; border-bottom: 2px solid #5b2585; padding-bottom: 0.25rem; }
+              .badge { display: inline-block; margin: 0.25rem; }
+              code { background: #f4f4f4; padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.9em; }
+              pre { background: #f4f4f4; padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; }
+              pre code { background: none; padding: 0; }
+              a { color: #5b2585; }
+              .install-btn { display: inline-block; background: #5b2585; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; margin: 1rem 0; font-weight: bold; }
+              .install-btn:hover { background: #7a3aad; }
+            </style>
+          </head>
+          <body>
+            <h1>alfred-jq</h1>
+            <p>Alfred workflow to process JSON from clipboard using jq queries.</p>
+            <h2>Installation</h2>
+            <a class="install-btn" href="https://github.com/blackboxprogramming/alfred-jq/releases/latest/download/jq.alfredworkflow">Download Latest Release</a>
+            <h2>Requirements</h2>
+            <ul>
+              <li><a href="https://alfredapp.com/">Alfred</a> with Powerpack</li>
+              <li><a href="https://stedolan.github.io/jq/">jq</a> - install via <code>brew install jq</code></li>
+            </ul>
+            <h2>Usage</h2>
+            <ol>
+              <li>Copy JSON to clipboard</li>
+              <li>Open Alfred and type <code>jq</code></li>
+              <li>Type your jq query (e.g., <code>.name</code>, <code>.[] | .id</code>)</li>
+              <li>Press <strong>Enter</strong> to preview, <strong>Shift+Enter</strong> to copy result</li>
+            </ol>
+            <h2>API</h2>
+            <p>A Cloudflare Worker API is available for server-side jq processing:</p>
+            <pre><code>curl -X POST https://jq-api.your-domain.workers.dev/query \
+            -H "Content-Type: application/json" \
+            -d '{"input": {"name": "test"}, "filter": ".name"}'</code></pre>
+          </body>
+          </html>
+          HTMLEOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac2b3c603fc # v4.0.5

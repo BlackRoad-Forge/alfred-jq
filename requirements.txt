@@ -1,0 +1,7 @@
+# Pinned production dependencies
+# The 'workflow' module is vendored in ./workflow/ (Alfred-Workflow by Dean Jackson)
+
+# Development/testing dependencies
+pytest==8.3.4
+flake8==7.1.1
+pycodestyle==2.12.1

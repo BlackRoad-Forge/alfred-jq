@@ -20,9 +20,13 @@ import re
 import socket
 import string
 import unicodedata
+try:
+    import urllib2
+    import urlparse
+except ImportError:
+    import urllib.request as urllib2
+    import urllib.parse as urlparse
 import urllib
-import urllib2
-import urlparse
 import zlib
 
 __version__ = open(os.path.join(os.path.dirname(__file__), 'version')).read()

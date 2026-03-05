@@ -1,0 +1,33 @@
+name: Bug Report
+description: Report a bug with alfred-jq
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      placeholder: A clear description of the bug
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Copy JSON to clipboard
+        2. Open Alfred, type 'jq'
+        3. Enter query '...'
+    validations:
+      required: true
+  - type: input
+    id: alfred-version
+    attributes:
+      label: Alfred version
+  - type: input
+    id: jq-version
+    attributes:
+      label: jq version (run 'jq --version')
+  - type: input
+    id: macos-version
+    attributes:
+      label: macOS version

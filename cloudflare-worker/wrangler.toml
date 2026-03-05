@@ -1,0 +1,9 @@
+name = "alfred-jq-api"
+main = "worker.js"
+compatibility_date = "2024-09-25"
+
+[vars]
+MAX_INPUT_SIZE = "102400"  # 100KB max input
+
+[limits]
+cpu_ms = 50

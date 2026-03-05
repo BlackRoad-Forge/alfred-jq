@@ -1,0 +1,18 @@
+name: Feature Request
+description: Suggest a new feature for alfred-jq
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature description
+      placeholder: Describe the feature you'd like
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      placeholder: Describe when and why you'd use this feature
+    validations:
+      required: true
