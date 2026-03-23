@@ -1,0 +1,23 @@
+Copyright (c) 2025-2026 BlackRoad OS, Inc. All Rights Reserved.
+
+PROPRIETARY SOFTWARE LICENSE
+
+This software and associated documentation files (the "Software") are the
+exclusive property of BlackRoad OS, Inc. ("BlackRoad"). The Software is
+licensed, not sold.
+
+Permission is NOT granted to any person or entity to copy, modify, merge,
+publish, distribute, sublicense, sell, or create derivative works of the
+Software without the express written consent of BlackRoad OS, Inc.
+
+The Software is provided "AS IS", without warranty of any kind, express or
+implied, including but not limited to the warranties of merchantability,
+fitness for a particular purpose, and noninfringement.
+
+For licensing inquiries: legal@blackroad.io
+
+---
+
+NOTICE: This software is derived from meta/alfred-jq.
+Original license terms may have applied to the upstream source.
+This derivative work is independently licensed under the terms above.
